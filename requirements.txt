@@ -1,0 +1,5 @@
+whois
+dnspython
+requests
+rich
+python-nmap
