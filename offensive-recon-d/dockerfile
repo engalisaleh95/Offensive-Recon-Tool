@@ -1,0 +1,23 @@
+# Base image
+FROM python:3.12-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies (for WhatWeb, DNS, etc.)
+RUN apt-get update && \
+    apt-get install -y git ruby ruby-dev build-essential libyaml-dev curl && \
+    gem install bundler && \
+    git clone https://github.com/urbanadventurer/WhatWeb.git /opt/WhatWeb && \
+    cd /opt/WhatWeb && \
+    bundle install && \
+    ln -s /opt/WhatWeb/whatweb /usr/local/bin/whatweb
+
+# Copy project files
+COPY . .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Default command
+CMD ["python", "main.py"]
